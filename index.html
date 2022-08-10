@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeMe Generator</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body class="main-layout" onload="onInit()">
+
+    <header class="main-header full">
+        <nav class="main-header-nav flex align-items-center main-layout">
+            <div class="logo nav-logo">MeMe</div>
+            <ul class="headr-nav-list flex clean-list ">
+                <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#"
+                        onclick="showGallery()">Gallery</a>
+                </li>
+                <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#">About</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="filter-container">
+        <div class="filter-search">
+            <input class="fliter-box" type="search" placeholder="Enter search keyword" name="" id="">
+        </div>
+    </div>
+
+    <section class="gallery full">
+        <div class="gallery-container main-layout">
+            <div class="gallery-content grid gap"></div>
+        </div>
+    </section>
+
+    <section class="editor" hidden>
+        <div class="editor-container flex space-between">
+            <div class="editor-content">
+                <canvas class="canvas-editor" width="500px" height="500px" tabindex="1"></canvas>
+            </div>
+            <div class="operators-content flex column justfiy-start align-items-center">
+                <input class="operator" type="text" name="" id="" placeholder="Edit text"
+                    oninput="onTxtInput(this.value)">
+                <input class="operator" type="color" name="" id="" onchange=" onColorSelector(this.value)">
+                <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                    onclick="onTxtSize('-2')">A-</span>
+                <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                    onclick="onTxtSize('2')">A+</span>
+                <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                    onclick="onLineSelector()">⇅</span>
+                <!-- <img class="operator icon-operator" src="img/icons/decrease font - icon.png" onclick="onTxtSize('-2')">
+                <img class="operator icon-operator" src="img/icons/increase font - icon.png" onclick="onTxtSize('2')">
+                <img class="operator icon-operator" src="img/icons/up-and-down-opposite-double-arrows-side-by-side.png"
+                    onclick="onLineSelector()"> -->
+                <button class=" btn btn-gallery operator" onclick="showGallery()">Gallery</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="about">
+
+    </section> -->
+
+    <footer class="main-footer full">
+        <section class="footer-content flex column align-items-center justfiy-center">
+            <div class="logo footer-logo">MeMe</div>
+            <small class="footer-text"> © All Rights Reseverd </small>
+        </section>
+    </footer>
+
+
+    <script src="js/util.js"></script>
+    <script src="js/services/meme.service.js"></script>
+    <script src="js/services/gallery.service.js"></script>
+    <script src="js/controllers/gallery.controller.js"></script>
+    <script src="js/controllers/meme.controller.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
