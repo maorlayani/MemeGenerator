@@ -4,3 +4,5 @@ function onInit() {
     initGallery()
     initCnvas()
 }
+
+

@@ -18,15 +18,41 @@
                 <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#"
                         onclick="showGallery()">Gallery</a>
                 </li>
+                <span class="vertical-line"></span>
+                <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#"
+                        onclick="showSavedMemes()">MeMes</a>
+                </li><span class="vertical-line"></span>
                 <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#">About</a>
                 </li>
             </ul>
         </nav>
     </header>
 
+    <!-- <div class="filter-container">
+        <div class="filter-search flex column">
+            <input class="filter-box" type="search" placeholder="Enter search keyword" name="" id="">
+            <button class="btn btn-flex" onclick="onFlexMeme()">I'm flexible</button>
+        </div>
+    </div> -->
+
     <div class="filter-container">
-        <div class="filter-search">
-            <input class="fliter-box" type="search" placeholder="Enter search keyword" name="" id="">
+        <div class="filter-search flex column">
+            <form action="" onsubmit="onDataFilter(event)" class="form-content flex">
+                <input class="filter-box" list="keywords" placeholder="Enter search keyword" name="" id="">
+                <datalist id="keywords">
+                    <option value="all"></option>
+                    <option value="funny"></option>
+                    <option value="baby"></option>
+                    <option value="animal"></option>
+                    <option value="movie"></option>
+                    <option value="akward"></option>
+                    <option value="politic"></option>
+                </datalist>
+                <button type="submit" class="btn-search-submit">
+                    <img class="img-search-submit" src="img/icons/search-icon.png" alt="">
+                </button>
+            </form>
+            <button class="btn btn-flex" onclick="onFlexMeme()">I'm flexible</button>
         </div>
     </div>
 
@@ -36,26 +62,63 @@
         </div>
     </section>
 
-    <section class="editor" hidden>
-        <div class="editor-container flex space-between">
-            <div class="editor-content">
-                <canvas class="canvas-editor" width="500px" height="500px" tabindex="1"></canvas>
-            </div>
-            <div class="operators-content flex column justfiy-start align-items-center">
-                <input class="operator" type="text" name="" id="" placeholder="Edit text"
-                    oninput="onTxtInput(this.value)">
-                <input class="operator" type="color" name="" id="" onchange=" onColorSelector(this.value)">
-                <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
-                    onclick="onTxtSize('-2')">A-</span>
-                <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
-                    onclick="onTxtSize('2')">A+</span>
-                <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
-                    onclick="onLineSelector()">⇅</span>
-                <!-- <img class="operator icon-operator" src="img/icons/decrease font - icon.png" onclick="onTxtSize('-2')">
-                <img class="operator icon-operator" src="img/icons/increase font - icon.png" onclick="onTxtSize('2')">
-                <img class="operator icon-operator" src="img/icons/up-and-down-opposite-double-arrows-side-by-side.png"
-                    onclick="onLineSelector()"> -->
-                <button class=" btn btn-gallery operator" onclick="showGallery()">Gallery</button>
+    <section class="gallery-saved-imgs full" hidden>
+        <div class="gallery-saved-imgs-container main-layout">
+            <div class="gallery-saved-imgs-content grid gap"></div>
+        </div>
+    </section>
+
+    <section class="editor full" hidden>
+        <div class="editor-container main-layout">
+            <div class="canvas-container flex space-between">
+                <div class="editor-content">
+                    <canvas class="canvas-editor" width="500px" height="500px" onclick="canvasClicked(event)"></canvas>
+                </div>
+
+                <div class="operators-content grid">
+                    <input class="operator icon-operator editor-txt-box" type="text" name="" id=""
+                        placeholder="Edit text" onfocus="onFocusTxtInput()" oninput="onTxtInput(this.value)">
+                    <input class="operator icon-operator color-picker" type="color" name="" id=""
+                        onchange="onColorText(this.value)">
+                    <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                        onclick="onTxtSize('-2')">A-</span>
+                    <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                        onclick="onTxtSize('2')">A+</span>
+                    <span class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                        onclick="onLineSelector()">⇅</span>
+                    <img src="img/icons/add.png"
+                        class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                        onclick="onAddLine()">
+                    <img src="img/icons/trash.png" class="operator icon-operator disable-select"
+                        onclick="onRemoveLine()">
+                    <img src="img/icons/align-to-left.png" class="operator icon-operator disable-select"
+                        onclick="onAlignTxt('left')">
+                    <img src="img/icons/center-text-alignment.png" class="operator icon-operator disable-select"
+                        onclick="onAlignTxt('center')">
+                    <img src="img/icons/align-to-right.png" class="operator icon-operator disable-select"
+                        onclick="onAlignTxt('right')">
+                    <img src="img/icons/paint-board-and-brush.png" class="operator icon-operator">
+                    <img src="img/icons/text stroke.png" class="operator icon-operator">
+                    <input class="operator icon-operator color-picker" type="color" name="" id=""
+                        onchange="onColorStroke(this.value)">
+                    <select class="operator font-selector" name="" id="" onchange="onChangeFont(this.value)">
+                        <option value="impact">Impact</option>
+                        <option value="montserrat">Montserrat</option>
+                        <option value="arial">Arial</option>
+                    </select>
+                    <div class="emoji-container operator icon-operator flex align-items-center justfiy-center">
+                        <span class="emoji-icon" onclick="onAddEmojiLine('😎')">😎</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('😍')">😍</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('😝')">😝</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('💩')">💩</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('🤪')">🤪</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('😵')">😵</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('🤯')">🤯</span>
+                        <span class="emoji-icon" onclick="onAddEmojiLine('🤣')">🤣</span>
+                    </div>
+                    <button class="btn btn-save" onclick="onSaveMeme()">Save</button>
+                    <button class="btn btn-delete" onclick="onRemoveMeme()">Delete</button>
+                </div>
             </div>
         </div>
     </section>
@@ -64,7 +127,7 @@
 
     </section> -->
 
-    <footer class="main-footer full">
+    <footer class="main-footer full ">
         <section class="footer-content flex column align-items-center justfiy-center">
             <div class="logo footer-logo">MeMe</div>
             <small class="footer-text"> © All Rights Reseverd </small>
@@ -73,6 +136,7 @@
 
 
     <script src="js/util.js"></script>
+    <script src="js/services/storage.service.js"></script>
     <script src="js/services/meme.service.js"></script>
     <script src="js/services/gallery.service.js"></script>
     <script src="js/controllers/gallery.controller.js"></script>
