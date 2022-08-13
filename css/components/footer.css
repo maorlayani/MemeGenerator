@@ -1,0 +1,12 @@
+.main-footer {
+    background-color: var(--clr1);
+    min-height: 210px;
+}
+
+.footer-logo {
+    margin-top: 4.6875rem;
+}
+
+.footer-text {
+    margin-top: 1.5625rem;
+}

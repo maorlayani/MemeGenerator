@@ -1,7 +1,6 @@
 'use strict'
 
 let gMeme
-// let gSavedMemes = []
 let gSavedImages = []
 
 function setImg(imgId) {
@@ -33,7 +32,9 @@ function setStrokeColor(color) {
 }
 
 function setTxtSize(txtDiffr) {
-    gMeme.lines[gMeme.selectedLineIdx].size += +txtDiffr
+    const fontSize = gMeme.lines[gMeme.selectedLineIdx].size
+    if (fontSize >= 70 && txtDiffr > 0) return
+    else gMeme.lines[gMeme.selectedLineIdx].size += +txtDiffr
 }
 
 function setLine(val) {
@@ -77,6 +78,7 @@ function createLine(txt, x, y) {
 function createNewLine(txt) {
     gMeme.lines.push(createLine(txt, 250, 250))
 }
+
 function setFont(font) {
     gMeme.lines[gMeme.selectedLineIdx].font = font
 }
@@ -86,7 +88,9 @@ function generateRandMeme() {
         'Hold up', 'Keep Calm and Carry On', 'Winter is Coming', 'I\'m pooping', 'Bring it', 'I\'ts called fashion',
         'Wait a second', 'Nope', 'I want answers', 'Bring me'
     ]
+
     const numOfLines = getRandomInt(1, 3)
+
     gMeme = {
         selectedImgId: getRandImg(),
         selectedLineIdx: 0,
@@ -107,6 +111,7 @@ function generateRandMeme() {
             }
         ]
     }
+
     if (numOfLines === 2) {
         gMeme.lines.push({
             txt: memeTxts[getRandomInt(0, memeTxts.length)],
@@ -131,21 +136,6 @@ function saveMeme(savedMeme) {
     saveMemesToStorage()
 }
 
-// function saveMeme(data) {
-//     gSavedImages = loadMemesFromStorage()
-//     if (!gSavedImages || !gSavedImages.length) gSavedImages = []
-//     gSavedImages.push(data)
-//     saveMemesToStorage()
-// }
-
-function saveMemesToStorage() {
-    _saveToStorage('memesDB', gSavedImages)
-}
-
-function loadMemesFromStorage() {
-    return _loadFromStorage('memesDB')
-}
-
 function updateLinesPos() {
     if (!gMeme) return
     let lines = gMeme.lines
@@ -166,4 +156,12 @@ function setLineDrag(isDrag) {
 function moveText(dx, dy) {
     gMeme.lines[gMeme.selectedLineIdx].pos.x += dx
     gMeme.lines[gMeme.selectedLineIdx].pos.y += dy
+}
+
+function saveMemesToStorage() {
+    _saveToStorage('memesDB', gSavedImages)
+}
+
+function loadMemesFromStorage() {
+    return _loadFromStorage('memesDB')
 }

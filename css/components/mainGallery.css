@@ -1,0 +1,14 @@
+.gallery {
+    background-color: var(--clr3);
+    padding: 1.5625rem;
+}
+
+.gallery-content {
+    grid-template-columns: repeat(auto-fit, minmax(201px, 1fr));
+}
+
+.gallery-img:hover {
+    cursor: pointer;
+    box-shadow: -10px 13px 32px 1px rgba(0, 0, 0, 0.84);
+    transition: box-shadow 0.2s;
+}

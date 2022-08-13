@@ -1,0 +1,27 @@
+.filter-box {
+    font-size: 1rem;
+    margin: 2.1875rem 0;
+    padding: 1.2rem 0.5rem;
+    width: 250px;
+    border: none;
+    border-bottom: 2px solid var(--clr4);
+}
+
+.btn-flex {
+    margin-bottom: 1rem;
+}
+
+.btn-search-submit {
+    border: none;
+    background-color: var(--clr2);
+}
+
+.btn-search-submit:hover {
+    cursor: pointer;
+}
+
+.img-search-submit {
+    background-color: var(--clr2);
+    border: none;
+    width: 1.5rem;
+}

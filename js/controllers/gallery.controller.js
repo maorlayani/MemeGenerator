@@ -67,7 +67,6 @@ function onDataFilter(ev) {
     ev.preventDefault()
     const elInputFilter = document.querySelector('.filter-box')
     gSearchFilter = elInputFilter.value
-    // if (!gSearchFilter) return
     let images = getImgs()
     if (gSearchFilter === 'all' || gSearchFilter === '') {
         gFilteredImgs = images
@@ -88,20 +87,5 @@ function onDataFilter(ev) {
     renderGallery()
 }
 
-// function showSavedMemes() {
-//     var elGallery = document.querySelector('.gallery-saved-imgs-content')
-
-//     const savedMemes = loadMemesFromStorage()
-//     if (!savedMemes || !savedMemes.length) {
-//         elGallery.innerHTML = `<h2 calss="no-save-msg">There aren't any saved MeMe's</h2>`
-//         showSavedMemesGallery()
-//         return
-//     }
-//     const strHTMLs = savedMemes.map(meme =>
-//         `<img src=${'data:image/png;base64,' + meme} class="image gallery-img">`
-//     )
-//     elGallery.innerHTML = strHTMLs.join('')
-//     showSavedMemesGallery()
-// }
 
 

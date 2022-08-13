@@ -24,9 +24,6 @@ function createImgs() {
         createImg(17, ['politic']),
         createImg(18, ['movie'])
     ]
-    // for (let i = 0; i < 18; i++) {
-    //     gImgs[i] = createImg(i + 1)
-    // }
 }
 
 function createImg(url, keywords = ['funny']) {
