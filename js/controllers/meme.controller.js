@@ -53,28 +53,6 @@ function renderMeme() {
     }
 }
 
-function canvasClicked(ev) {
-    let clickedTxt = null
-    const meme = getMeme()
-    const lines = meme.lines
-    let currLineIdx
-    const textHeightPadding = 10
-    clickedTxt = lines.find((line, lineIdx) => {
-        currLineIdx = lineIdx
-        let borderWidth = gCtx.measureText(line.txt).width
-        return ev.offsetX >= (line.pos.x - (borderWidth / 2)) - gTextWidthPadding && ev.offsetX <= borderWidth + gTextWidthPadding + (line.pos.x - (borderWidth / 2))
-            && ev.offsetY >= line.pos.y && ev.offsetY <= line.size + textHeightPadding * 2 + line.pos.y
-    })
-    gIsLineClicked = false
-    if (clickedTxt) {
-        console.log('Line clicked')
-        gIsLineClicked = true
-        meme.selectedLineIdx = currLineIdx
-        gIsTextBorder = true
-        renderMeme()
-    }
-}
-
 function onFocusTxtInput() {
     gIsTextBorder = true
     renderMeme()
@@ -223,7 +201,31 @@ function showGallery() {
     document.querySelector('.gallery-saved-imgs').hidden = true
 }
 
+function canvasClicked(ev) {
+    let clickedTxt = null
+    const meme = getMeme()
+    const lines = meme.lines
+    let currLineIdx
+    const textHeightPadding = 10
+    clickedTxt = lines.find((line, lineIdx) => {
+        currLineIdx = lineIdx
+        let borderWidth = gCtx.measureText(line.txt).width
+        return ev.offsetX >= (line.pos.x - (borderWidth / 2)) - gTextWidthPadding && ev.offsetX <= borderWidth + gTextWidthPadding + (line.pos.x - (borderWidth / 2))
+            && ev.offsetY >= line.pos.y && ev.offsetY <= line.size + textHeightPadding * 2 + line.pos.y
+    })
+    gIsLineClicked = false
+    if (clickedTxt) {
+        console.log('Line clicked')
+        gIsLineClicked = true
+        meme.selectedLineIdx = currLineIdx
+        gIsTextBorder = true
+        renderMeme()
+    }
+}
+
 function onDown(ev) {
+    gIsLineClicked = false
+    canvasClicked(ev)
     const pos = getEvPos(ev)
     if (!gIsLineClicked) return
     setLineDrag(true)
