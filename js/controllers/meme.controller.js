@@ -58,16 +58,16 @@ function canvasClicked(ev) {
     const meme = getMeme()
     const lines = meme.lines
     let currLineIdx
-    let borderWidth = gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
     const textHeightPadding = 10
     clickedTxt = lines.find((line, lineIdx) => {
         currLineIdx = lineIdx
+        let borderWidth = gCtx.measureText(line.txt).width
         return ev.offsetX >= (line.pos.x - (borderWidth / 2)) - gTextWidthPadding && ev.offsetX <= borderWidth + gTextWidthPadding + (line.pos.x - (borderWidth / 2))
             && ev.offsetY >= line.pos.y && ev.offsetY <= line.size + textHeightPadding * 2 + line.pos.y
     })
     gIsLineClicked = false
     if (clickedTxt) {
-        console.log('wowwwww')
+        console.log('Line clicked')
         gIsLineClicked = true
         meme.selectedLineIdx = currLineIdx
         gIsTextBorder = true
@@ -150,7 +150,6 @@ function onAddLine() {
     renderMeme()
 }
 function onAddEmojiLine(txt) {
-    // gIsEmojiLine = true
     createNewLine(txt, 250, 250)
     setLine('new')
     gIsTextBorder = true
