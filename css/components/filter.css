@@ -25,3 +25,22 @@
     border: none;
     width: 1.5rem;
 }
+
+.keywords-container {
+    margin-left: 1rem;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 0px;
+    max-height: 300px;
+
+}
+
+.keyword {
+    margin-right: 4rem;
+    margin-bottom: 0;
+    text-transform: capitalize;
+}
+
+.keyword:hover {
+    cursor: pointer;
+}

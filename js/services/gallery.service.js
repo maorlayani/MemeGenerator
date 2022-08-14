@@ -3,6 +3,8 @@
 let gImgs = []
 let gID = 101
 
+let gKeywordSearchCountMap = { funny: 12, animal: 0, baby: 20, politic: 5, akward: 0, movie: 7 }
+
 function createImgs() {
     gImgs = [
         createImg(1, ['funny', 'politic']),
@@ -49,8 +51,35 @@ function getRandImg() {
     return gImgs[randImgIdx].id
 }
 
+function setImgsFilterBy(filterBy) {
+    const images = getImgs()
+    for (let i = 0; i < images.length; i++) {
+        const currImg = images[i]
+        const keywords = currImg.keywords
+        for (let j = 0; j < keywords.length; j++) {
+            if (keywords[j] === filterBy) {
+                gFilteredImgs.push(currImg)
+            }
+        }
+    }
+}
+
+function getImgsForDisplay() {
+    const imgs = (gSearchFilter) ? gFilteredImgs : getImgs()
+    return imgs
+}
 
 
+function getKeywordSearchCountMap() {
+    return gKeywordSearchCountMap
+}
 
+function updateKeywordFontSize(keyword) {
+    gKeywordSearchCountMap[keyword] += 2
+}
 
-
+function setKeywordFontSize(keyword) {
+    const keywordsCountMap = getKeywordSearchCountMap()
+    const keywordSize = (keywordsCountMap[keyword] < 30) ? keywordsCountMap[keyword] : 30
+    return keywordSize
+}

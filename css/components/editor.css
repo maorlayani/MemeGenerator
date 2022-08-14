@@ -1,9 +1,6 @@
 .editor {
     margin: 0;
     background-color: var(--clr3);
-}
-
-.editor-container {
     padding: 1.5625rem 0;
 }
 

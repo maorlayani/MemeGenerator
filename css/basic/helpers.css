@@ -8,6 +8,10 @@
     user-select: none;
 }
 
+.debug * {
+    outline: 1px solid orange;
+}
+
 /* flex helpers */
 .flex {
     display: flex;

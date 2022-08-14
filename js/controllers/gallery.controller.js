@@ -7,15 +7,15 @@ let gFilteredImgs = []
 function initGallery() {
     createImgs()
     renderGallery()
+    renderKeywordSearch()
 }
 
 function renderGallery() {
-    let images = getImgs()
-    if (gSearchFilter) images = gFilteredImgs
-    const strHTMLs = images.map(img =>
+    const imgs = getImgsForDisplay()
+    const strHTMLs = imgs.map(img =>
         `<img src=${img.url} class="image gallery-img" onclick="onImgSelect('${img.id}')">`
     )
-    var elGallery = document.querySelector('.gallery-content')
+    const elGallery = document.querySelector('.gallery-content')
     elGallery.innerHTML = strHTMLs.join('')
     gFilteredImgs = []
 }
@@ -25,7 +25,7 @@ function onImgSelect(imgId, savedMemeIdx) {
     resizeCanvas()
     gSavedMemeIdx = savedMemeIdx
     if (!gSavedMemeIdx) setImg(+imgId)
-    else gMeme = gSavedImages[gSavedMemeIdx].meme
+    else gMeme = gSavedMemes[gSavedMemeIdx].meme
     renderMeme()
 }
 
@@ -44,46 +44,49 @@ function showSavedMemesGallery() {
 }
 
 function showSavedMemes() {
-    var elGallery = document.querySelector('.gallery-saved-imgs-content')
-
-    gSavedImages = loadMemesFromStorage()
-    if (!gSavedImages || !gSavedImages.length) {
+    const elGallery = document.querySelector('.gallery-saved-imgs-content')
+    gSavedMemes = loadMemesFromStorage()
+    if (!gSavedMemes || !gSavedMemes.length) {
         elGallery.innerHTML = `<h2 calss="no-save-msg">There aren't any saved MeMe's</h2>`
         showSavedMemesGallery()
         return
     }
 
     let strHTMLs = ''
-    for (let i = 0; i < gSavedImages.length; i++) {
+    for (let i = 0; i < gSavedMemes.length; i++) {
         strHTMLs +=
-            `<img src=${'data:image/png;base64,' + gSavedImages[i].img} class="image gallery-img"
-        onclick="onImgSelect('${gSavedImages[i].meme.selectedImgId}', '${i}')">`
+            `<img src=${'data:image/png;base64,' + gSavedMemes[i].img} class="image gallery-img"
+        onclick="onImgSelect('${gSavedMemes[i].meme.selectedImgId}', '${i}')">`
     }
     elGallery.innerHTML = strHTMLs
     showSavedMemesGallery()
 }
 
-function onDataFilter(ev) {
+function onFilterBy(ev) {
     ev.preventDefault()
     const elInputFilter = document.querySelector('.filter-box')
-    gSearchFilter = elInputFilter.value
-    let images = getImgs()
-    if (gSearchFilter === 'all' || gSearchFilter === '') {
-        gFilteredImgs = images
-        renderGallery()
-        return
-    }
-    for (let i = 0; i < images.length; i++) {
-        let currImg = images[i]
-        let keywords = currImg.keywords
-        for (let j = 0; j < keywords.length; j++) {
-            if (keywords[j] === elInputFilter.value) {
-                console.log(keywords[j])
-                gFilteredImgs.push(currImg)
-            }
-        }
-    }
-    console.log(gFilteredImgs)
+    gSearchFilter = elInputFilter.value.toLowerCase()
+    const imgs = getImgs()
+    if (gSearchFilter === 'all' || gSearchFilter === '') gFilteredImgs = imgs
+    else setImgsFilterBy(gSearchFilter)
+    renderGallery()
+}
+
+function renderKeywordSearch() {
+    const keywordsCountMap = getKeywordSearchCountMap()
+    const keywordKeys = Object.keys(keywordsCountMap)
+    const strHTMLs = keywordKeys.map(keyword =>
+        `<span class="keyword" onclick="onClickedKeyword('${keyword}')" style="font-size: ${16 + setKeywordFontSize(keyword)}px;">${keyword}</span>`
+    )
+    const elKeywords = document.querySelector('.keywords-container')
+    elKeywords.innerHTML = strHTMLs.join('')
+}
+
+function onClickedKeyword(keyword) {
+    updateKeywordFontSize(keyword)
+    gSearchFilter = keyword
+    setImgsFilterBy(gSearchFilter)
+    renderKeywordSearch()
     renderGallery()
 }
 

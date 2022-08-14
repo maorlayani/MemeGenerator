@@ -18,11 +18,14 @@ function initCnvas() {
     gCtx = gElCanvas.getContext('2d')
     elContainer = document.querySelector('.editor-content')
     addListeners()
+    renderEmoji()
 }
 
 function renderMeme() {
+
     const meme = getMeme()
     if (!meme) return
+
     if (elContainer.offsetWidth < 500) updateLinesPos()
     const currImg = getImgById(meme.selectedImgId)
     const lines = meme.lines
@@ -37,24 +40,35 @@ function renderMeme() {
             document.querySelector('.editor-txt-box').value = ''
             return
         }
-        let borderWidth = gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
-        let borderHeight = lines[meme.selectedLineIdx].size
-        let borderY = lines[meme.selectedLineIdx].pos.y
-        let borderX = lines[meme.selectedLineIdx].pos.x - (borderWidth / 2)
+        const line = getSelctedLine()
+        const borderWidth = gCtx.measureText(line.txt).width
+        // const borderWidth = gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
+        const borderHeight = line.size
+        const borderY = line.pos.y
+        const borderX = line.pos.x - (borderWidth / 2)
 
         const textHeightPadding = 10
-        gTextWidthPadding = 10 + ((lines[meme.selectedLineIdx].size - 40) * 2.5)
+        gTextWidthPadding = 10 + ((line.size - 40) * 2.5)
 
         if (gIsTextBorder) {
-            drawRect(borderX - gTextWidthPadding, borderY - textHeightPadding, borderWidth + gTextWidthPadding * 2, borderHeight + textHeightPadding * 2)
+            drawRect(
+                borderX - gTextWidthPadding,
+                borderY - textHeightPadding,
+                borderWidth + gTextWidthPadding * 2,
+                borderHeight + textHeightPadding * 2
+            )
         }
-        document.querySelector('.editor-txt-box').value = lines[meme.selectedLineIdx].txt
+        document.querySelector('.editor-txt-box').value = line.txt
         gIsTextBorder = false
     }
 }
 
 function onFocusTxtInput() {
-    gIsTextBorder = true
+    const line = getSelctedLine()
+    if (line.txt === 'Add text here') {
+        setLineTxt(' ')
+        gIsTextBorder = false
+    } else gIsTextBorder = true
     renderMeme()
 }
 
@@ -104,15 +118,15 @@ function onLineSelector() {
     setLine()
     gIsTextBorder = true
     renderMeme()
-    updateFontSelectVa()
+    updateFontSelectedVal()
 }
 
 function onFlexMeme() {
     getFlexMeme()
 }
 
-function onAlignTxt(dir) {
-    setAlignTxt(dir)
+function onAlignTxt(direction) {
+    setAlignTxt(direction)
     renderMeme()
 }
 
@@ -122,7 +136,7 @@ function onRemoveLine() {
 }
 
 function onAddLine() {
-    createNewLine('New Line', 250, 250)
+    createNewLine('Add text here', 250, 250)
     setLine('new')
     gIsTextBorder = true
     renderMeme()
@@ -139,9 +153,8 @@ function onChangeFont(val) {
     renderMeme()
 }
 
-function updateFontSelectVa() {
-    const meme = getMeme()
-    const currLineFont = meme.lines[meme.selectedLineIdx].font
+function updateFontSelectedVal() {
+    const currLineFont = getSelctedLine().font
     document.querySelector('.font-selector').value = currLineFont
 }
 
@@ -154,8 +167,9 @@ function onFlexMeme() {
 function onSaveMeme() {
     let data = gElCanvas.toDataURL('image/png')
     data = data.replace(/^data:image\/(png|jpg);base64,/, "")
-    gMeme.isSaved = true
-    const savedMeme = { img: data, meme: gMeme }
+    const meme = getMeme()
+    meme.isSaved = true
+    const savedMeme = { img: data, meme }
     saveMeme(savedMeme)
     showSavedMemes()
 }
@@ -210,12 +224,12 @@ function canvasClicked(ev) {
     clickedTxt = lines.find((line, lineIdx) => {
         currLineIdx = lineIdx
         let borderWidth = gCtx.measureText(line.txt).width
-        return ev.offsetX >= (line.pos.x - (borderWidth / 2)) - gTextWidthPadding && ev.offsetX <= borderWidth + gTextWidthPadding + (line.pos.x - (borderWidth / 2))
+        return ev.offsetX >= (line.pos.x - (borderWidth / 2)) - gTextWidthPadding
+            && ev.offsetX <= borderWidth + gTextWidthPadding + (line.pos.x - (borderWidth / 2))
             && ev.offsetY >= line.pos.y && ev.offsetY <= line.size + textHeightPadding * 2 + line.pos.y
     })
     gIsLineClicked = false
     if (clickedTxt) {
-        console.log('Line clicked')
         gIsLineClicked = true
         meme.selectedLineIdx = currLineIdx
         gIsTextBorder = true
@@ -273,3 +287,13 @@ function downloadCanvas(elLink) {
     const data = gElCanvas.toDataURL()
     elLink.href = data
 }
+
+function renderEmoji() {
+    const emojis = getEmojis()
+    const strHTMLs = emojis.map(emoji =>
+        `<span class="emoji-icon" onclick="onAddEmojiLine(this.innerText)">${emoji}</span>`
+    )
+    const elEmojis = document.querySelector('.emoji-container')
+    elEmojis.innerHTML = strHTMLs.join('')
+}
+

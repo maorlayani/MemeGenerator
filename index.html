@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeMe Generator</title>
+    <link rel="icon" type="image/x-icon" href="/img/icons8-picture.gif">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -15,37 +16,45 @@
         <nav class="main-header-nav flex align-items-center main-layout">
             <div class="logo nav-logo">MeMe</div>
             <ul class="headr-nav-list flex clean-list ">
-                <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#"
+                <li class="headr-nav-item">
+                    <a class="a-item flex align-items-center justfiy-center" href="#"
                         onclick="showGallery()">Gallery</a>
                 </li>
                 <span class="vertical-line"></span>
-                <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#"
+                <li class="headr-nav-item">
+                    <a class="a-item flex align-items-center justfiy-center" href="#"
                         onclick="showSavedMemes()">MeMes</a>
-                </li><span class="vertical-line"></span>
-                <li class="headr-nav-item"><a class="a-item flex align-items-center justfiy-center" href="#">About</a>
+                </li>
+                <span class="vertical-line"></span>
+                <li class="headr-nav-item">
+                    <a class="a-item flex align-items-center justfiy-center" href="#">About</a>
                 </li>
             </ul>
         </nav>
     </header>
 
-    <div class="filter-container">
+    <div class="filter-container flex row">
         <div class="filter-search flex column">
-            <form action="" onsubmit="onDataFilter(event)" class="form-content flex">
+            <form action="" onsubmit="onFilterBy(event)" class="form-content flex">
                 <input class="filter-box" list="keywords" placeholder="Enter search keyword" name="" id="">
                 <datalist id="keywords">
-                    <option value="all"></option>
-                    <option value="funny"></option>
-                    <option value="baby"></option>
-                    <option value="animal"></option>
-                    <option value="movie"></option>
-                    <option value="akward"></option>
-                    <option value="politic"></option>
+                    <option value="All"></option>
+                    <option value="Funny"></option>
+                    <option value="Baby"></option>
+                    <option value="Animal"></option>
+                    <option value="Movie"></option>
+                    <option value="Akward"></option>
+                    <option value="Politic"></option>
                 </datalist>
                 <button type="submit" class="btn-search-submit">
                     <img class="img-search-submit" src="img/icons/search-icon.png" alt="">
                 </button>
             </form>
             <button class="btn btn-flex" onclick="onFlexMeme()">I'm flexible</button>
+        </div>
+        <div class="keywords-container flex align-items-center">
+            <span>help</span>
+            <span>animal</span>
         </div>
     </div>
 
@@ -61,74 +70,60 @@
         </div>
     </section>
 
-    <section class="editor full" hidden>
-        <div class="editor-container main-layout">
-            <div class="canvas-container flex space-between">
-                <div class="editor-content">
-                    <canvas class="canvas-editor" width="500px" height="500px" onclick="canvasClicked(event)"></canvas>
-                </div>
-
-                <div class="operators-content grid">
-                    <input class="operator icon-operator editor-txt-box" type="text" name="" id=""
-                        placeholder="Edit text" onfocus="onFocusTxtInput()" oninput="onTxtInput(this.value)">
-                    <input class="operator icon-operator color-picker" type="color" name="" id=""
-                        onchange="onColorText(this.value)">
-                    <img src="img/icons/decrease font - icon.png" class="operator icon-operator disable-select"
-                        onclick="onTxtSize('-2')">
-                    <img src="img/icons/increase font - icon.png" class="operator icon-operator disable-select"
-                        onclick="onTxtSize('2')">
-                    <img src="img/icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
-                        class="operator icon-operator disable-select" onclick="onLineSelector()">
-                    <img src="img/icons/add.png"
-                        class="operator icon-operator disable-select flex justfiy-center align-items-center"
-                        onclick="onAddLine()">
-                    <img src="img/icons/trash.png" class="operator icon-operator disable-select"
-                        onclick="onRemoveLine()">
-                    <img src="img/icons/align-to-left.png" class="operator icon-operator disable-select"
-                        onclick="onAlignTxt('left')">
-                    <img src="img/icons/center-text-alignment.png" class="operator icon-operator disable-select"
-                        onclick="onAlignTxt('center')">
-                    <img src="img/icons/align-to-right.png" class="operator icon-operator disable-select"
-                        onclick="onAlignTxt('right')">
-                    <img src="img/icons/paint-board-and-brush.png" class="operator icon-operator">
-                    <img src="img/icons/text stroke.png" class="operator icon-operator">
-                    <input class="operator icon-operator color-picker" type="color" name="" id=""
-                        onchange="onColorStroke(this.value)">
-                    <select class="operator font-selector" name="" id="" onchange="onChangeFont(this.value)">
-                        <option value="impact">Impact</option>
-                        <option value="montserrat">Montserrat</option>
-                        <option value="arial">Arial</option>
-                    </select>
-                    <div class="emoji-container operator icon-operator flex align-items-center justfiy-center">
-                        <span class="emoji-icon" onclick="onAddEmojiLine('😎')">😎</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('😍')">😍</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('😝')">😝</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('💩')">💩</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('🤪')">🤪</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('😵')">😵</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('🤯')">🤯</span>
-                        <span class="emoji-icon" onclick="onAddEmojiLine('🤣')">🤣</span>
-                    </div>
-                    <button class="btn btn-save" onclick="onSaveMeme()">Save</button>
-                    <button class="btn btn-delete" onclick="onRemoveMeme()">Delete</button>
-                    <a href="#" class="btn download-link flex align-items-center justfiy-center"
-                        onclick="downloadCanvas(this)" download="meme">Download</a>
-                </div>
+    <section class="editor full main-layout" hidden>
+        <div class="canvas-container flex space-between ">
+            <div class="editor-content">
+                <canvas class="canvas-editor" width="500px" height="500px" onclick="canvasClicked(event)"></canvas>
             </div>
+
+            <div class="operators-content grid">
+                <input class="operator icon-operator editor-txt-box" type="text" name="" id="" placeholder="Edit text"
+                    onfocus="onFocusTxtInput()" oninput="onTxtInput(this.value)">
+                <input class="operator icon-operator color-picker" type="color" name="" id=""
+                    onchange="onColorText(this.value)">
+                <img src="img/icons/decrease font - icon.png" class="operator icon-operator disable-select"
+                    onclick="onTxtSize('-2')">
+                <img src="img/icons/increase font - icon.png" class="operator icon-operator disable-select"
+                    onclick="onTxtSize('2')">
+                <img src="img/icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
+                    class="operator icon-operator disable-select" onclick="onLineSelector()">
+                <img src="img/icons/add.png"
+                    class="operator icon-operator disable-select flex justfiy-center align-items-center"
+                    onclick="onAddLine()">
+                <img src="img/icons/trash.png" class="operator icon-operator disable-select" onclick="onRemoveLine()">
+                <img src="img/icons/align-to-left.png" class="operator icon-operator disable-select"
+                    onclick="onAlignTxt('left')">
+                <img src="img/icons/center-text-alignment.png" class="operator icon-operator disable-select"
+                    onclick="onAlignTxt('center')">
+                <img src="img/icons/align-to-right.png" class="operator icon-operator disable-select"
+                    onclick="onAlignTxt('right')">
+                <img src="img/icons/paint-board-and-brush.png" class="operator icon-operator">
+                <img src="img/icons/text stroke.png" class="operator icon-operator">
+                <input class="operator icon-operator color-picker" type="color" name="" id=""
+                    onchange="onColorStroke(this.value)">
+                <select class="operator font-selector" name="" id="" onchange="onChangeFont(this.value)">
+                    <option value="impact">Impact</option>
+                    <option value="montserrat">Montserrat</option>
+                    <option value="arial">Arial</option>
+                </select>
+
+                <div class="emoji-container operator icon-operator flex align-items-center justfiy-center"></div>
+
+                <button class="btn btn-save" onclick="onSaveMeme()">Save</button>
+                <button class="btn btn-delete" onclick="onRemoveMeme()">Delete</button>
+                <a href="#" class="btn download-link flex align-items-center justfiy-center"
+                    onclick="downloadCanvas(this)" download="meme">Download</a>
+            </div>
+
         </div>
     </section>
 
-    <!-- <section class="about">
-
-    </section> -->
-
-    <footer class="main-footer full ">
+    <footer class="main-footer full">
         <section class="footer-content flex column align-items-center justfiy-center">
             <div class="logo footer-logo">MeMe</div>
-            <small class="footer-text"> © All Rights Reseverd </small>
+            <small class="footer-text">© All Rights Reseverd</small>
         </section>
     </footer>
-
 
     <script src="js/util.js"></script>
     <script src="js/services/storage.service.js"></script>

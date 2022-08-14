@@ -1,16 +1,17 @@
 'use strict'
 
 let gMeme
-let gSavedImages = []
+let gSavedMemes = []
 
 function setImg(imgId) {
+    const placeholder = 'Add text here'
     gMeme = {
         selectedImgId: imgId,
         selectedLineIdx: 0,
         isSaved: false,
         lines: [
-            createLine('Add text here', 200, 50),
-            createLine('Add text also here', 200, 450)
+            createLine(placeholder, 200, 50),
+            createLine(placeholder, 200, 410)
         ]
     }
 }
@@ -20,21 +21,22 @@ function getMeme() {
 }
 
 function setLineTxt(txt) {
-    gMeme.lines[gMeme.selectedLineIdx].txt = txt
+    getSelctedLine().txt = txt
 }
 
 function setTxtColor(color) {
-    gMeme.lines[gMeme.selectedLineIdx].textColor = color
+    getSelctedLine().textColor = color
 }
 
 function setStrokeColor(color) {
-    gMeme.lines[gMeme.selectedLineIdx].strokeColor = color
+    getSelctedLine().strokeColor = color
 }
 
 function setTxtSize(txtDiffr) {
-    const fontSize = gMeme.lines[gMeme.selectedLineIdx].size
-    if (fontSize >= 70 && txtDiffr > 0) return
-    else gMeme.lines[gMeme.selectedLineIdx].size += +txtDiffr
+    const line = getSelctedLine()
+    const fontSize = line.size
+    if (fontSize >= 70 && txtDiffr > 0 || fontSize <= 30 && txtDiffr < 0) return
+    else line.size += +txtDiffr
 }
 
 function setLine(val) {
@@ -46,11 +48,12 @@ function setLine(val) {
     else gMeme.selectedLineIdx++
 }
 
-function setAlignTxt(dir) {
-    if (dir === 'right') gMeme.lines[gMeme.selectedLineIdx].pos.x = 450
-    else if (dir === 'left') gMeme.lines[gMeme.selectedLineIdx].pos.x = 50
-    else gMeme.lines[gMeme.selectedLineIdx].pos.x = 200
-    gMeme.lines[gMeme.selectedLineIdx].align = dir
+function setAlignTxt(direction) {
+    const line = getSelctedLine()
+    if (direction === 'right') line.pos.x = 450
+    else if (direction === 'left') line.pos.x = 50
+    else line.pos.x = 200
+    line.align = direction
 }
 
 function removeLine() {
@@ -80,7 +83,7 @@ function createNewLine(txt) {
 }
 
 function setFont(font) {
-    gMeme.lines[gMeme.selectedLineIdx].font = font
+    getSelctedLine().font = font
 }
 
 function generateRandMeme() {
@@ -130,9 +133,9 @@ function generateRandMeme() {
 }
 
 function saveMeme(savedMeme) {
-    gSavedImages = loadMemesFromStorage()
-    if (!gSavedImages) gSavedImages = []
-    gSavedImages.push(savedMeme)
+    gSavedMemes = loadMemesFromStorage()
+    if (!gSavedMemes) gSavedMemes = []
+    gSavedMemes.push(savedMeme)
     saveMemesToStorage()
 }
 
@@ -145,23 +148,33 @@ function updateLinesPos() {
 }
 
 function removeMeme() {
-    gSavedImages.splice(gSavedMemeIdx, 1)
+    gSavedMemes.splice(gSavedMemeIdx, 1)
     saveMemesToStorage()
 }
 
 function setLineDrag(isDrag) {
-    gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag
+    getSelctedLine().isDrag = isDrag
+}
+
+function getSelctedLine() {
+    return gMeme.lines[gMeme.selectedLineIdx]
 }
 
 function moveText(dx, dy) {
-    gMeme.lines[gMeme.selectedLineIdx].pos.x += dx
-    gMeme.lines[gMeme.selectedLineIdx].pos.y += dy
+    const line = getSelctedLine()
+    line.pos.x += dx
+    line.pos.y += dy
 }
 
 function saveMemesToStorage() {
-    _saveToStorage('memesDB', gSavedImages)
+    _saveToStorage('memesDB', gSavedMemes)
 }
 
 function loadMemesFromStorage() {
     return _loadFromStorage('memesDB')
 }
+
+function getEmojis() {
+    return ['😎', '😍', '😝', '💩', '🤪', '😵', '🤯', '🤣']
+}
+
